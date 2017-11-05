@@ -257,22 +257,42 @@ namespace SwarmForge
                     double Cg = (Cglobal.Value/100.00) * Ci;
 
             // initialize random particle matrix
-            int[][] pMatrix = RandomParticleMatrix(pN, oN, lN);
+            int[][] pMatrix = new int[pN + 1][];
+            for (int i = 1; i < pN + 1; i++)
+            {
+                pMatrix[i] = new int[oN + 1];
+            }
+            pMatrix = RandomParticleMatrix(pN, oN, lN);
 
             // initialize random particle inertion matrix
-            int[][] vMatrix = RandomInertioneMatrix(pN, oN, mV0);
+            int[][] vMatrix = new int[pN + 1][];
+            for (int i = 1; i < pN + 1; i++)
+            {
+                vMatrix[i] = new int[oN + 1];
+            }
+            vMatrix = RandomInertioneMatrix(pN, oN, mV0);
 
             // initialize curren particle inertiion matrix (now same as initial)
-            int[][] nvMatrix = vMatrix;
+            int[][] nvMatrix = new int[pN + 1][];
+            for (int i = 1; i < pN + 1; i++)
+            {
+                nvMatrix[i] = new int[oN + 1];
+            }
+            nvMatrix = vMatrix;
 
             // initialize fitness array
-            int[] fit;
+            int[] fit = new int[pN];
 
             //initialize local best matrix (current positions are now also best ones)
-            int[][] lMatrix = pMatrix;
+            int[][] lMatrix = new int[pN + 1][];
+            for (int i = 1; i < pN + 1; i++)
+            {
+                lMatrix[i] = new int[oN + 1];
+            }
+            lMatrix = pMatrix;
 
             // initialize local fitness vector
-            int[] lfit;
+            int[] lfit = new int[pN];
 
             // initialize stopwatch
             var timer = Stopwatch.StartNew();
@@ -305,7 +325,8 @@ namespace SwarmForge
                 lfit = fit;
                 // global best fitness and soulution assign
                 int best = fit.Min();
-                int nbest = best;
+                int nbest = 999999;
+                nbest = best;
                 int[] vbest = pMatrix[Array.IndexOf(fit, best)];
 
                 // 1. P-median result with loop stoping on iteration limit hit
@@ -343,7 +364,7 @@ namespace SwarmForge
                             }
                         }
                         // log
-                        log = Log(log, pMatrix, nvMatrix, fit, pN, oN);
+                        log = Log(log, pMatrix, nvMatrix, vMatrix, fit, pN, oN);
                         // plot
                         Solution(c, timer.ElapsedMilliseconds, best, nbest);
                     }
@@ -380,7 +401,7 @@ namespace SwarmForge
                             }
                         }
                         // log
-                        log = Log(log, pMatrix, nvMatrix, fit, pN, oN);
+                        log = Log(log, pMatrix, nvMatrix, vMatrix, fit, pN, oN);
                         // plot
                         Solution(c, timer.ElapsedMilliseconds, best, nbest);
                     }
@@ -416,7 +437,7 @@ namespace SwarmForge
                             }
                         }
                         // log
-                        log = Log(log, pMatrix, nvMatrix, fit, pN, oN);
+                        log = Log(log, pMatrix, nvMatrix, vMatrix, fit, pN, oN);
                         // plot
                         Solution(c, timer.ElapsedMilliseconds, best, nbest);
                     }
@@ -430,7 +451,8 @@ namespace SwarmForge
                 fit[0] = 999999;
                 // global best fitness and soulution assign
                 int best = fit.Min();
-                int nbest = best;
+                int nbest = 99999;
+                nbest = best;
                 lfit = fit;
                 // best solution vector
                 int[] vbest = pMatrix[Array.IndexOf(fit, best)];
@@ -465,7 +487,7 @@ namespace SwarmForge
                             }
                         }
                         // log
-                        log = Log(log, pMatrix, nvMatrix, fit, pN, oN);
+                        log = Log(log, pMatrix, nvMatrix, vMatrix, fit, pN, oN);
                         // plot
                         Solution(c, timer.ElapsedMilliseconds, best, nbest);
                     }
@@ -502,7 +524,7 @@ namespace SwarmForge
                             }
                         }
                         // log
-                        log = Log(log, pMatrix, nvMatrix, fit, pN, oN);
+                        log = Log(log, pMatrix, nvMatrix, vMatrix, fit, pN, oN);
                         // plot
                         Solution(c, timer.ElapsedMilliseconds, best, nbest);
                     }
@@ -538,7 +560,7 @@ namespace SwarmForge
                             }
                         }
                         // log
-                        log = Log(log, pMatrix, nvMatrix, fit, pN, oN);
+                        log = Log(log, pMatrix, nvMatrix, vMatrix, fit, pN, oN);
                         // plot
                         Solution(c, timer.ElapsedMilliseconds, best, nbest);
                     }
@@ -705,7 +727,9 @@ namespace SwarmForge
             {
                 for (int j = 1; j < objectN + 1; j++)
                 {
-                    matrix[i][j] = rnd.Next(-maxV0, maxV0+1);
+                    int rndnmb = rnd.Next(-maxV0, maxV0);
+                    if (rndnmb > -1) { rndnmb ++; }
+                    matrix[i][j] = rndnmb;
                 }
             }
             // return generated result
@@ -816,16 +840,26 @@ namespace SwarmForge
                 {
                     // SET MOVEMENT TO SUM OF:
                     // 1. distance (and direction) to local best times its influence
+                    double locmove = (lMatrix[i][j] - pMatrix[i][j]) *Cl;
+                    if (locmove > max) { locmove = max; }
+                    else if (locmove < -max) { locmove = -max; }
                     // 2. distance (and direction) to global best times its influence
+                    double globmove = (vbest[j] - pMatrix[i][j]) * Cg;
+                    if (globmove > max) { globmove = max; }
+                    else if (globmove < -max) { globmove = -max; }
                     // 3. initial inertia in that dimension times its influence
-                    double move = (lMatrix[i][j] - pMatrix[i][j]) * Cl + vMatrix[i][j] * C0 + (vbest[j] - pMatrix[i][j]) * Cg; 
+                    double inermove = nvMatrix[i][j] * C0;
+                    if (inermove > max) { inermove = max; }
+                    else if (inermove < -max) { inermove = -max; }
+
+                    // set movement to the sum (write into new inertia matrix defeind earlier)
+                    double move = Math.Ceiling(locmove + globmove + inermove);
+                    if (move == 0) { move = -1; }
+                    step[i][j] = Convert.ToInt32(move);
 
                     //if it tops maximum inertia, set to max
-                    if (move > max) { step[i][j] = max; }
-                    else if (move < -max) { step[i][j] = -max; }
-
-                    // otherwise set movement to the sum (write into new inertia matrix defeind earlier)
-                    else { step[i][j] = Convert.ToInt32(Math.Round(move)); }
+                    //if (move > max) { step[i][j] = max; }
+                    //else if (move < -max) { step[i][j] = -max; }
 
                     // move the particle (write new position into new particle position matrix defeind earlier)
                     newM[i][j] = pMatrix[i][j] + step[i][j];
@@ -843,7 +877,7 @@ namespace SwarmForge
 
         // function that returns solution search log
         // Result is a file filled with particle postitions through iterations. Can be used to introspect their movement.
-        public string Log(string log,int[][] pMatrix, int[][] vMatrix, int[] fit, int pN, int oN)
+        public string Log(string log,int[][] pMatrix, int[][] nvMatrix, int[][] vMatrix, int[] fit, int pN, int oN)
         {
             //for each particle
             for (int u = 1; u < pN + 1; u++)
@@ -852,7 +886,9 @@ namespace SwarmForge
                 for (int t = 1; t < oN + 1; t++)
                 {
                     //write current location and comma
-                    log = log + Convert.ToString(pMatrix[u][t])+ " (" + Convert.ToString(vMatrix[u][t]) + "), ";
+                    log = log + Convert.ToString(pMatrix[u][t]) + " ("; 
+                    log = log + Convert.ToString(vMatrix[u][t]) + ",";
+                    log = log + Convert.ToString(nvMatrix[u][t]) + "), ";
                 }
                 // add new line between particle
                 log = log + " " + fit[u] + Environment.NewLine;
