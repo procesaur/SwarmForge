@@ -28,6 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.label1 = new System.Windows.Forms.Label();
             this.fetch_button = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -42,10 +47,12 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.now_out = new System.Windows.Forms.Label();
             this.time_out = new System.Windows.Forms.Label();
             this.fit_out = new System.Windows.Forms.Label();
             this.iter_out = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.panel4 = new System.Windows.Forms.Panel();
             this.influ_pan = new System.Windows.Forms.Panel();
             this.C0 = new System.Windows.Forms.TrackBar();
@@ -79,14 +86,20 @@
             this.particleN = new System.Windows.Forms.NumericUpDown();
             this.basic_pan = new System.Windows.Forms.Panel();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.panel5 = new System.Windows.Forms.Panel();
             this.reconst_pan = new System.Windows.Forms.Panel();
-            this.recon = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.constTo = new System.Windows.Forms.NumericUpDown();
             this.label13 = new System.Windows.Forms.Label();
+            this.constTo = new System.Windows.Forms.NumericUpDown();
+            this.recon = new System.Windows.Forms.Button();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.stop = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.avg_out = new System.Windows.Forms.Label();
             this.solve_pan.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             this.panel4.SuspendLayout();
             this.influ_pan.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.C0)).BeginInit();
@@ -102,9 +115,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.maxV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.particleN)).BeginInit();
             this.basic_pan.SuspendLayout();
-            this.panel5.SuspendLayout();
             this.reconst_pan.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.constTo)).BeginInit();
+            this.panel5.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -246,51 +261,151 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.PaleGoldenrod;
-            this.panel2.Controls.Add(this.now_out);
-            this.panel2.Controls.Add(this.time_out);
+            this.panel2.Controls.Add(this.avg_out);
             this.panel2.Controls.Add(this.fit_out);
-            this.panel2.Controls.Add(this.iter_out);
-            this.panel2.Controls.Add(this.checkBox1);
+            this.panel2.Controls.Add(this.now_out);
+            this.panel2.Controls.Add(this.chart);
             this.panel2.Location = new System.Drawing.Point(315, 5);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(679, 667);
+            this.panel2.Size = new System.Drawing.Size(920, 489);
             this.panel2.TabIndex = 6;
+            // 
+            // chart
+            // 
+            this.chart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chart.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.chart.BackSecondaryColor = System.Drawing.Color.White;
+            this.chart.BorderlineColor = System.Drawing.Color.Transparent;
+            chartArea2.AlignmentOrientation = ((System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations)((System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations.Vertical | System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations.Horizontal)));
+            chartArea2.Area3DStyle.Inclination = 45;
+            chartArea2.Area3DStyle.IsRightAngleAxes = false;
+            chartArea2.Area3DStyle.Perspective = 2;
+            chartArea2.Area3DStyle.PointDepth = 30;
+            chartArea2.Area3DStyle.PointGapDepth = 1;
+            chartArea2.Area3DStyle.Rotation = 0;
+            chartArea2.Area3DStyle.WallWidth = 10;
+            chartArea2.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+            chartArea2.BackColor = System.Drawing.Color.LightGray;
+            chartArea2.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.TopBottom;
+            chartArea2.BackImageAlignment = System.Windows.Forms.DataVisualization.Charting.ChartImageAlignmentStyle.Top;
+            chartArea2.BackImageTransparentColor = System.Drawing.Color.Transparent;
+            chartArea2.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            chartArea2.BorderColor = System.Drawing.Color.White;
+            chartArea2.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
+            chartArea2.Name = "plot";
+            chartArea2.Position.Auto = false;
+            chartArea2.Position.Height = 90F;
+            chartArea2.Position.Width = 100F;
+            chartArea2.Position.X = 3F;
+            chartArea2.Position.Y = 3F;
+            chartArea2.ShadowColor = System.Drawing.Color.White;
+            this.chart.ChartAreas.Add(chartArea2);
+            legend2.Alignment = System.Drawing.StringAlignment.Center;
+            legend2.BackColor = System.Drawing.Color.Gray;
+            legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            legend2.ForeColor = System.Drawing.Color.White;
+            legend2.Name = "Legend1";
+            this.chart.Legends.Add(legend2);
+            this.chart.Location = new System.Drawing.Point(0, 0);
+            this.chart.Name = "chart";
+            this.chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Fire;
+            series4.BorderWidth = 2;
+            series4.ChartArea = "plot";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series4.Color = System.Drawing.Color.Red;
+            series4.LabelBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            series4.Legend = "Legend1";
+            series4.LegendText = "Best Fitness so Far";
+            series4.Name = "best_fit";
+            series4.ShadowColor = System.Drawing.Color.Gold;
+            series4.ShadowOffset = 1;
+            series4.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series4.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series5.BorderWidth = 2;
+            series5.ChartArea = "plot";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series5.Color = System.Drawing.Color.Blue;
+            series5.Legend = "Legend1";
+            series5.LegendText = "Best Current Fitness";
+            series5.Name = "best_now";
+            series5.ShadowColor = System.Drawing.Color.Cyan;
+            series5.ShadowOffset = 1;
+            series5.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series5.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series6.BorderWidth = 2;
+            series6.ChartArea = "plot";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series6.Color = System.Drawing.Color.Lime;
+            series6.Legend = "Legend1";
+            series6.LegendText = "Current Fitness Average";
+            series6.Name = "avg_now";
+            series6.ShadowColor = System.Drawing.Color.YellowGreen;
+            series6.ShadowOffset = 1;
+            this.chart.Series.Add(series4);
+            this.chart.Series.Add(series5);
+            this.chart.Series.Add(series6);
+            this.chart.Size = new System.Drawing.Size(913, 463);
+            this.chart.TabIndex = 4;
+            this.chart.Text = "chart1";
             // 
             // now_out
             // 
             this.now_out.AutoSize = true;
-            this.now_out.Location = new System.Drawing.Point(46, 98);
+            this.now_out.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.now_out.ForeColor = System.Drawing.Color.Blue;
+            this.now_out.Location = new System.Drawing.Point(439, 462);
             this.now_out.Name = "now_out";
-            this.now_out.Size = new System.Drawing.Size(50, 13);
+            this.now_out.Size = new System.Drawing.Size(39, 17);
             this.now_out.TabIndex = 3;
-            this.now_out.Text = "now best";
+            this.now_out.Text = "NaN";
+            this.now_out.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // time_out
             // 
             this.time_out.AutoSize = true;
-            this.time_out.Location = new System.Drawing.Point(46, 31);
+            this.time_out.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.time_out.Location = new System.Drawing.Point(622, 11);
             this.time_out.Name = "time_out";
-            this.time_out.Size = new System.Drawing.Size(26, 13);
+            this.time_out.Size = new System.Drawing.Size(16, 16);
             this.time_out.TabIndex = 2;
-            this.time_out.Text = "time";
+            this.time_out.Text = "0";
+            this.time_out.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // fit_out
             // 
             this.fit_out.AutoSize = true;
-            this.fit_out.Location = new System.Drawing.Point(46, 77);
+            this.fit_out.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.fit_out.ForeColor = System.Drawing.Color.Red;
+            this.fit_out.Location = new System.Drawing.Point(296, 459);
             this.fit_out.Name = "fit_out";
-            this.fit_out.Size = new System.Drawing.Size(38, 13);
+            this.fit_out.Size = new System.Drawing.Size(39, 17);
             this.fit_out.TabIndex = 1;
-            this.fit_out.Text = "best fit";
+            this.fit_out.Text = "NaN";
+            this.fit_out.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // iter_out
             // 
             this.iter_out.AutoSize = true;
-            this.iter_out.Location = new System.Drawing.Point(46, 55);
+            this.iter_out.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.iter_out.Location = new System.Drawing.Point(286, 11);
             this.iter_out.Name = "iter_out";
-            this.iter_out.Size = new System.Drawing.Size(55, 13);
+            this.iter_out.Size = new System.Drawing.Size(16, 16);
             this.iter_out.TabIndex = 0;
-            this.iter_out.Text = "iteration N";
+            this.iter_out.Text = "0";
+            this.iter_out.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Enabled = false;
+            this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox1.Location = new System.Drawing.Point(733, 99);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(187, 17);
+            this.checkBox1.TabIndex = 0;
+            this.checkBox1.Text = "use particles gravity (experimental)";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.Visible = false;
             // 
             // panel4
             // 
@@ -469,7 +584,7 @@
             this.time_limit.Size = new System.Drawing.Size(73, 20);
             this.time_limit.TabIndex = 11;
             this.time_limit.Value = new decimal(new int[] {
-            60,
+            10,
             0,
             0,
             0});
@@ -481,7 +596,7 @@
             this.result_limit.Size = new System.Drawing.Size(73, 20);
             this.result_limit.TabIndex = 10;
             this.result_limit.Value = new decimal(new int[] {
-            5,
+            20,
             0,
             0,
             0});
@@ -493,7 +608,7 @@
             this.iter_limit.Size = new System.Drawing.Size(73, 20);
             this.iter_limit.TabIndex = 9;
             this.iter_limit.Value = new decimal(new int[] {
-            100,
+            60,
             0,
             0,
             0});
@@ -652,17 +767,6 @@
             this.progressBar1.Size = new System.Drawing.Size(310, 14);
             this.progressBar1.TabIndex = 8;
             // 
-            // panel5
-            // 
-            this.panel5.BackColor = System.Drawing.Color.Gold;
-            this.panel5.Controls.Add(this.comboBox1);
-            this.panel5.Controls.Add(this.label1);
-            this.panel5.Controls.Add(this.fetch_button);
-            this.panel5.Location = new System.Drawing.Point(3, 5);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(306, 31);
-            this.panel5.TabIndex = 9;
-            // 
             // reconst_pan
             // 
             this.reconst_pan.BackColor = System.Drawing.Color.Khaki;
@@ -675,28 +779,14 @@
             this.reconst_pan.TabIndex = 13;
             this.reconst_pan.Visible = false;
             // 
-            // recon
+            // label13
             // 
-            this.recon.Location = new System.Drawing.Point(14, 5);
-            this.recon.Name = "recon";
-            this.recon.Size = new System.Drawing.Size(173, 23);
-            this.recon.TabIndex = 1;
-            this.recon.Text = "Reconstruct data around location";
-            this.recon.UseVisualStyleBackColor = true;
-            this.recon.Click += new System.EventHandler(this.recon_Click);
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Enabled = false;
-            this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.Location = new System.Drawing.Point(484, 8);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(187, 17);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "use particles gravity (experimental)";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.Visible = false;
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(253, 10);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(41, 13);
+            this.label13.TabIndex = 4;
+            this.label13.Text = "label13";
             // 
             // constTo
             // 
@@ -710,21 +800,99 @@
             0,
             0});
             // 
-            // label13
+            // recon
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(253, 10);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(41, 13);
-            this.label13.TabIndex = 4;
-            this.label13.Text = "label13";
+            this.recon.Location = new System.Drawing.Point(14, 5);
+            this.recon.Name = "recon";
+            this.recon.Size = new System.Drawing.Size(173, 23);
+            this.recon.TabIndex = 1;
+            this.recon.Text = "Reconstruct data around location";
+            this.recon.UseVisualStyleBackColor = true;
+            this.recon.Click += new System.EventHandler(this.recon_Click);
+            // 
+            // panel5
+            // 
+            this.panel5.BackColor = System.Drawing.Color.Gold;
+            this.panel5.Controls.Add(this.comboBox1);
+            this.panel5.Controls.Add(this.label1);
+            this.panel5.Controls.Add(this.fetch_button);
+            this.panel5.Location = new System.Drawing.Point(3, 5);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(306, 31);
+            this.panel5.TabIndex = 9;
+            // 
+            // stop
+            // 
+            this.stop.Location = new System.Drawing.Point(404, 4);
+            this.stop.Name = "stop";
+            this.stop.Size = new System.Drawing.Size(113, 31);
+            this.stop.TabIndex = 5;
+            this.stop.Text = "Cancel";
+            this.stop.UseVisualStyleBackColor = true;
+            this.stop.Click += new System.EventHandler(this.stop_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.panel1.Controls.Add(this.label15);
+            this.panel1.Controls.Add(this.iter_out);
+            this.panel1.Controls.Add(this.label17);
+            this.panel1.Controls.Add(this.time_out);
+            this.panel1.Controls.Add(this.stop);
+            this.panel1.Location = new System.Drawing.Point(315, 500);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(920, 38);
+            this.panel1.TabIndex = 10;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(17, 11);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(176, 16);
+            this.label15.TabIndex = 6;
+            this.label15.Text = "Current iteration number:";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.Location = new System.Drawing.Point(752, 11);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(148, 16);
+            this.label17.TabIndex = 8;
+            this.label17.Text = "of Elapsed Seconds";
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.panel3.Controls.Add(this.checkBox1);
+            this.panel3.Location = new System.Drawing.Point(315, 544);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(920, 128);
+            this.panel3.TabIndex = 11;
+            // 
+            // avg_out
+            // 
+            this.avg_out.AutoSize = true;
+            this.avg_out.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.avg_out.ForeColor = System.Drawing.Color.Green;
+            this.avg_out.Location = new System.Drawing.Point(579, 460);
+            this.avg_out.Name = "avg_out";
+            this.avg_out.Size = new System.Drawing.Size(39, 16);
+            this.avg_out.TabIndex = 5;
+            this.avg_out.Text = "NaN";
+            this.avg_out.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SwarmForge
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(998, 676);
+            this.ClientSize = new System.Drawing.Size(1240, 676);
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel4);
@@ -735,6 +903,7 @@
             this.solve_pan.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
             this.panel4.ResumeLayout(false);
             this.influ_pan.ResumeLayout(false);
             this.influ_pan.PerformLayout();
@@ -754,11 +923,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.particleN)).EndInit();
             this.basic_pan.ResumeLayout(false);
             this.basic_pan.PerformLayout();
-            this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
             this.reconst_pan.ResumeLayout(false);
             this.reconst_pan.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.constTo)).EndInit();
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -822,6 +995,13 @@
         private System.Windows.Forms.Label now_out;
         private System.Windows.Forms.NumericUpDown constTo;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart;
+        private System.Windows.Forms.Button stop;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label avg_out;
     }
 }
 

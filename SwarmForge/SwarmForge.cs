@@ -128,9 +128,44 @@ namespace SwarmForge
             maxV.Maximum = Convert.ToInt32(locationN.Text) / 2;
             maxV0.Maximum = Convert.ToInt32(locationN.Text) / 2;
             constTo.Maximum = Convert.ToInt32(locationN.Text);
+
+            // chart initialize
+            //chart.Series.Clear();           
+
+            // initialize three series
+            //var ser_best = new System.Windows.Forms.DataVisualization.Charting.Series
+            //{
+            //    Name = "Best Fitness so far",
+            //    Color = System.Drawing.Color.Red,
+            //    IsVisibleInLegend = false,
+            //    IsXValueIndexed = true,
+            //    ChartType = SeriesChartType.Line
+            //};
+            //this.chart.Series.Add(ser_best);
+
+            //var ser_now = new System.Windows.Forms.DataVisualization.Charting.Series
+            //{
+            //    Name = "Best Current Fitness",
+            //    Color = System.Drawing.Color.Green,
+            //    IsVisibleInLegend = false,
+            //    IsXValueIndexed = true,
+            //    ChartType = SeriesChartType.Line
+            //};
+            //this.chart.Series.Add(ser_now);
+
+            //var avg_now = new System.Windows.Forms.DataVisualization.Charting.Series
+            //{
+            //    Name = "Current Fitness Average",
+            //    Color = System.Drawing.Color.Yellow,
+            //    IsVisibleInLegend = false,
+            //    IsXValueIndexed = true,
+            //    ChartType = SeriesChartType.Line
+            //};
+            //this.chart.Series.Add(avg_now);
+
         }
 
-    // RECONSTRUCT BUTTON ACTION - DATASET REPROCESSING
+        // RECONSTRUCT BUTTON ACTION - DATASET REPROCESSING
         private void recon_Click(object sender, EventArgs e)
         {
             // get location number
@@ -231,12 +266,24 @@ namespace SwarmForge
             label13.Text = Convert.ToString(matconstr);
         }
 
+        // STOP BUTTON ACTION - STOP THE SEARCH
+        private void stop_Click(object sender, EventArgs e)
+        {
+
+        }
+
         // GO BUTTON ACTION - INTELLIGENT SOLUTION SEARCH
         private void go_but_Click(object sender, EventArgs e)
         {
+
+            // clear chart
+            chart.Series["best_fit"].Points.Clear();
+            chart.Series["best_now"].Points.Clear();
+            chart.Series["avg_now"].Points.Clear();
+
             //get values from labels
-                //particle number
-                int pN = Convert.ToInt32(particleN.Value);
+            //particle number
+            int pN = Convert.ToInt32(particleN.Value);
                 //object number
                 int oN = Convert.ToInt32(objectN.Text);
                 //location number
@@ -282,6 +329,7 @@ namespace SwarmForge
 
             // initialize fitness array
             int[] fit = new int[pN];
+            double fitavg = 0;
 
             //initialize local best matrix (current positions are now also best ones)
             int[][] lMatrix = new int[pN + 1][];
@@ -323,9 +371,11 @@ namespace SwarmForge
                 // calcualate first fintess
                 fit = MatrixFitnessMed(pMatrix, pN, lN, oN, costMatrix);
                 lfit = fit;
+
                 // global best fitness and soulution assign
                 int best = fit.Min();
-                int nbest = 999999;
+                int nbest = 99999;
+                
                 nbest = best;
                 int[] vbest = pMatrix[Array.IndexOf(fit, best)];
 
@@ -341,8 +391,18 @@ namespace SwarmForge
                         var newstep = step(pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN);
                         pMatrix = newstep.Item1;
                         nvMatrix = newstep.Item2;
+
                         // calculate fintess
                         fit = MatrixFitnessMed(pMatrix, pN, lN, oN, costMatrix);
+
+                        // calculate average fitness
+                        fitavg = 0;
+                        for (int i = 1; i < pN+1; i++)
+                        {
+                            fitavg = fitavg + fit[i];
+                        }
+                        fitavg = fitavg / pN;
+
                         // best fitness
                         nbest = fit.Min();
                         if (nbest < best)
@@ -363,10 +423,12 @@ namespace SwarmForge
                                 lMatrix[i] = pMatrix[i];
                             }
                         }
+
                         // log
                         log = Log(log, pMatrix, nvMatrix, vMatrix, fit, pN, oN);
+
                         // plot
-                        Solution(c, timer.ElapsedMilliseconds, best, nbest);
+                        Solution(c, timer.ElapsedMilliseconds, best, nbest, fitavg);
                     }
                 }
 
@@ -379,16 +441,31 @@ namespace SwarmForge
                     {
                         // increase iteration number
                         c++;
+
                         // perform a step
                         var newstep = step(pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN);
                         pMatrix = newstep.Item1;
                         nvMatrix = newstep.Item2;
+
                         // calculate fintess
                         fit = MatrixFitnessMed(pMatrix, pN, lN, oN, costMatrix);
+
+                        // calculate average fitness
+                        fitavg = 0;
+                        for (int i = 1; i < pN + 1; i++)
+                        {
+                            fitavg = fitavg + fit[i];
+                        }
+                        fitavg = fitavg / pN;
+
                         // best fitness
-                        best = fit.Min();
-                        // best solution vector
-                        vbest = pMatrix[Array.IndexOf(fit, best)];
+                        nbest = fit.Min();
+                        if (nbest < best)
+                        {
+                            best = nbest;
+                            vbest = pMatrix[Array.IndexOf(fit, nbest)];
+                        }
+
                         // set local bests matrix and value vector
                         for (int i = 1; i < pN + 1; i++)
                         {
@@ -400,10 +477,12 @@ namespace SwarmForge
                                 lMatrix[i] = pMatrix[i];
                             }
                         }
+
                         // log
                         log = Log(log, pMatrix, nvMatrix, vMatrix, fit, pN, oN);
+
                         // plot
-                        Solution(c, timer.ElapsedMilliseconds, best, nbest);
+                        Solution(c, timer.ElapsedMilliseconds, best, nbest, fitavg);
                     }
                 }
 
@@ -415,16 +494,31 @@ namespace SwarmForge
                     {
                         // increase iteration number
                         c++;
+
                         // perform a step
                         var newstep = step(pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN);
                         pMatrix = newstep.Item1;
                         nvMatrix = newstep.Item2;
+
                         // calculate fintess
                         fit = MatrixFitnessMed(pMatrix, pN, lN, oN, costMatrix);
+
+                        // calculate average fitness
+                        fitavg = 0;
+                        for (int i = 1; i < pN + 1; i++)
+                        {
+                            fitavg = fitavg + fit[i];
+                        }
+                        fitavg = fitavg / pN;
+
                         // best fitness
-                        best = fit.Min();
-                        // best solution vector
-                        vbest = pMatrix[Array.IndexOf(fit, best)];
+                        nbest = fit.Min();
+                        if (nbest < best)
+                        {
+                            best = nbest;
+                            vbest = pMatrix[Array.IndexOf(fit, nbest)];
+                        }
+
                         // set local bests matrix and value vector
                         for (int i = 1; i < pN + 1; i++)
                         {
@@ -436,10 +530,12 @@ namespace SwarmForge
                                 lMatrix[i] = pMatrix[i];
                             }
                         }
+
                         // log
                         log = Log(log, pMatrix, nvMatrix, vMatrix, fit, pN, oN);
+
                         // plot
-                        Solution(c, timer.ElapsedMilliseconds, best, nbest);
+                        Solution(c, timer.ElapsedMilliseconds, best, nbest, fitavg);
                     }
                 }
             }
@@ -449,11 +545,13 @@ namespace SwarmForge
                 // calcualate first fintess
                 fit = MatrixFitnessCent(pMatrix, pN, lN, oN, costMatrix);
                 fit[0] = 999999;
+
                 // global best fitness and soulution assign
                 int best = fit.Min();
                 int nbest = 99999;
                 nbest = best;
                 lfit = fit;
+
                 // best solution vector
                 int[] vbest = pMatrix[Array.IndexOf(fit, best)];
 
@@ -465,16 +563,31 @@ namespace SwarmForge
                     {
                         // increase iteration number
                         c++;
+
                         // perform a step
                         var newstep = step(pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN);
                         pMatrix = newstep.Item1;
                         nvMatrix = newstep.Item2;
+
                         // calculate fintess
                         fit = MatrixFitnessCent(pMatrix, pN, lN, oN, costMatrix);
+
+                        // calculate average fitness
+                        fitavg = 0;
+                        for (int i = 1; i < pN + 1; i++)
+                        {
+                            fitavg = fitavg + fit[i];
+                        }
+                        fitavg = fitavg / pN;
+
                         // best fitness
-                        best = fit.Min();
-                        // best solution vector
-                        vbest = pMatrix[Array.IndexOf(fit, best)];
+                        nbest = fit.Min();
+                        if (nbest < best)
+                        {
+                            best = nbest;
+                            vbest = pMatrix[Array.IndexOf(fit, nbest)];
+                        }
+
                         // set local bests matrix and value vector
                         for (int i = 1; i < pN + 1; i++)
                         {
@@ -486,10 +599,12 @@ namespace SwarmForge
                                 lMatrix[i] = pMatrix[i];
                             }
                         }
+
                         // log
                         log = Log(log, pMatrix, nvMatrix, vMatrix, fit, pN, oN);
+
                         // plot
-                        Solution(c, timer.ElapsedMilliseconds, best, nbest);
+                        Solution(c, timer.ElapsedMilliseconds, best, nbest, fitavg);
                     }
                 }
 
@@ -502,16 +617,31 @@ namespace SwarmForge
                     {
                         // increase iteration number
                         c++;
+
                         // perform a step
                         var newstep = step(pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN);
                         pMatrix = newstep.Item1;
                         nvMatrix = newstep.Item2;
+
                         // calculate fintess
                         fit = MatrixFitnessCent(pMatrix, pN, lN, oN, costMatrix);
+
+                        // calculate average fitness
+                        fitavg = 0;
+                        for (int i = 1; i < pN + 1; i++)
+                        {
+                            fitavg = fitavg + fit[i];
+                        }
+                        fitavg = fitavg / pN;
+
                         // best fitness
-                        best = fit.Min();
-                        // best solution vector
-                        vbest = pMatrix[Array.IndexOf(fit, best)];
+                        nbest = fit.Min();
+                        if (nbest < best)
+                        {
+                            best = nbest;
+                            vbest = pMatrix[Array.IndexOf(fit, nbest)];
+                        }
+
                         // set local bests matrix and value vector
                         for (int i = 1; i < pN + 1; i++)
                         {
@@ -523,10 +653,12 @@ namespace SwarmForge
                                 lMatrix[i] = pMatrix[i];
                             }
                         }
+
                         // log
                         log = Log(log, pMatrix, nvMatrix, vMatrix, fit, pN, oN);
+
                         // plot
-                        Solution(c, timer.ElapsedMilliseconds, best, nbest);
+                        Solution(c, timer.ElapsedMilliseconds, best, nbest, fitavg);
                     }
                 }
 
@@ -538,16 +670,30 @@ namespace SwarmForge
                     {
                         // increase iteration number
                         c++;
+
                         // perform a step
                         var newstep = step(pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN);
                         pMatrix = newstep.Item1;
                         nvMatrix = newstep.Item2;
+
                         // calculate fintess
                         fit = MatrixFitnessCent(pMatrix, pN, lN, oN, costMatrix);
+
+                        // calculate average fitness
+                        fitavg = 0;
+                        for (int i = 1; i < pN + 1; i++)
+                        {
+                            fitavg = fitavg + fit[i];
+                        }
+                        fitavg = fitavg / pN;
+
                         // best fitness
-                        best = fit.Min();
-                        // best solution vector
-                        vbest = pMatrix[Array.IndexOf(fit, best)];
+                        nbest = fit.Min();
+                        if (nbest < best)
+                        {
+                            best = nbest;
+                            vbest = pMatrix[Array.IndexOf(fit, nbest)];
+                        }
                         // set local bests matrix and value vector
                         for (int i = 1; i < pN + 1; i++)
                         {
@@ -559,10 +705,12 @@ namespace SwarmForge
                                 lMatrix[i] = pMatrix[i];
                             }
                         }
+
                         // log
                         log = Log(log, pMatrix, nvMatrix, vMatrix, fit, pN, oN);
+
                         // plot
-                        Solution(c, timer.ElapsedMilliseconds, best, nbest);
+                        Solution(c, timer.ElapsedMilliseconds, best, nbest, fitavg);
                     }
                 }
             }
@@ -843,19 +991,20 @@ namespace SwarmForge
                     double locmove = (lMatrix[i][j] - pMatrix[i][j]) *Cl;
                     if (locmove > max) { locmove = max; }
                     else if (locmove < -max) { locmove = -max; }
-                    // 2. distance (and direction) to global best times its influence
+
+                    //2. distance (and direction) to global best times its influence
                     double globmove = (vbest[j] - pMatrix[i][j]) * Cg;
                     if (globmove > max) { globmove = max; }
                     else if (globmove < -max) { globmove = -max; }
-                    // 3. initial inertia in that dimension times its influence
+
+                    //3. initial inertia in that dimension times its influence
                     double inermove = nvMatrix[i][j] * C0;
                     if (inermove > max) { inermove = max; }
                     else if (inermove < -max) { inermove = -max; }
 
                     // set movement to the sum (write into new inertia matrix defeind earlier)
-                    double move = Math.Ceiling(locmove + globmove + inermove);
-                    if (move == 0) { move = -1; }
-                    step[i][j] = Convert.ToInt32(move);
+                    step[i][j] = Convert.ToInt32(Math.Ceiling(locmove + globmove + inermove));
+                    if (step[i][j] == 0) { step[i][j] = -1; }
 
                     //if it tops maximum inertia, set to max
                     //if (move > max) { step[i][j] = max; }
@@ -902,31 +1051,42 @@ namespace SwarmForge
 
 
         // function to get informtion on each iteration - used for introspection
-        public int Solution(int c, long time, int best, int nbest)
+        public int Solution(int c, long time, int best, int nbest, double fitavg)
         {
             // update iteration count field
-            iter_out.Text = "Iteration count: " + Convert.ToString(c);
+            iter_out.Text = Convert.ToString(c);
             iter_out.Invalidate();
             iter_out.Update();
 
             // update elapsed time field
-            time_out.Text = "Elapsed time: " + Convert.ToString(time/1000) + " seconds";
+            time_out.Text = Convert.ToString(time / 1000);
             time_out.Invalidate();
             time_out.Update();
 
             // update best found fitness field
-            fit_out.Text = "Best found fitness: " + Convert.ToString(best);
+            fit_out.Text = Convert.ToString(best);
             fit_out.Invalidate();
             fit_out.Update();
 
             // update best fintess at current iteration field
-            now_out.Text ="Best fittness in iteration " + Convert.ToString(c) + ": " + Convert.ToString(nbest);
+            now_out.Text = Convert.ToString(nbest);
             now_out.Invalidate();
             now_out.Update();
+
+            // update average fintess at current iteration field
+            avg_out.Text = Convert.ToString(Math.Round(fitavg));
+            avg_out.Invalidate();
+            avg_out.Update();
+
+            chart.Series["best_fit"].Points.AddXY(c, best);
+            chart.Series["best_now"].Points.AddXY(c, nbest);
+            chart.Series["avg_now"].Points.AddXY(c, Convert.ToInt32(Math.Round(fitavg)));
+
+            chart.Invalidate();
+            chart.Update();
 
             // out
             return 0;
         }
-
     }
 }
