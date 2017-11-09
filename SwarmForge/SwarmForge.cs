@@ -319,13 +319,15 @@ namespace SwarmForge
             }
             vMatrix = RandomInertioneMatrix(pN, oN, mV0);
 
-            // initialize curren particle inertiion matrix (now same as initial)
+            //initialize curren particle inertiion matrix(now same as initial)
             int[][] nvMatrix = new int[pN + 1][];
             for (int i = 1; i < pN + 1; i++)
             {
                 nvMatrix[i] = new int[oN + 1];
             }
             nvMatrix = vMatrix;
+
+            //int[][] nvMatrix = vMatrix;
 
             // initialize fitness array
             int[] fit = new int[pN];
@@ -976,6 +978,8 @@ namespace SwarmForge
             // inertion matrix after iteration
             int[][] newM = new int[pN+1][];
 
+            Random rnd = new Random();
+
             // for each particle
             for (int i = 1; i < pN+1; i++)
             {
@@ -1003,7 +1007,7 @@ namespace SwarmForge
                     else if (inermove < -max) { inermove = -max; }
 
                     // set movement to the sum (write into new inertia matrix defeind earlier)
-                    step[i][j] = Convert.ToInt32(Math.Ceiling(locmove + globmove + inermove));
+                    step[i][j] = Convert.ToInt32(Math.Ceiling(locmove + globmove + inermove + rnd.Next(-max,max)));
                     if (step[i][j] == 0) { step[i][j] = -1; }
 
                     //if it tops maximum inertia, set to max
