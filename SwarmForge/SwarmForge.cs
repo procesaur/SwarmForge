@@ -11,6 +11,7 @@ namespace SwarmForge
     {
         // define costMatrix as global variable
         int[][] costMatrix;
+        int opt;
         //initialize the component
         public SwarmForge() { InitializeComponent(); }
 
@@ -96,6 +97,7 @@ namespace SwarmForge
         {
             // hide panels (might be hidden already)
             solve_pan.Visible = false;
+            current_pan.Visible = false;
 
             // get database selection (must be selected)
             string choice = comboBox1.SelectedItem.ToString();
@@ -123,13 +125,16 @@ namespace SwarmForge
             reconst_pan.Visible = true;
             limit_pan.Visible = true;
             solve_pan.Visible = true;
+            current_pan.Visible = true;
 
             // initialize numeric field extremes
             maxV.Maximum = Convert.ToInt32(locationN.Text) / 2;
             maxV0.Maximum = Convert.ToInt32(locationN.Text) / 2;
+            maxR.Maximum = Convert.ToInt32(locationN.Text) / 2;
             constTo.Maximum = Convert.ToInt32(locationN.Text);
 
             // chart initialize
+
             //chart.Series.Clear();           
 
             // initialize three series
@@ -280,28 +285,48 @@ namespace SwarmForge
             chart.Series["best_fit"].Points.Clear();
             chart.Series["best_now"].Points.Clear();
             chart.Series["avg_now"].Points.Clear();
+            chart.Series["optimum"].Points.Clear();
 
             //get values from labels
             //particle number
             int pN = Convert.ToInt32(particleN.Value);
-                //object number
-                int oN = Convert.ToInt32(objectN.Text);
-                //location number
-                int lN = Convert.ToInt32(locationN.Text);
-                //maximum initial particle speed
-                int mV0 = Convert.ToInt32(maxV0.Value);
-                //maximum particle speed
-                int mV = Convert.ToInt32(maxV.Value);
+            //object number
+            int oN = Convert.ToInt32(objectN.Text);
+            //location number
+            int lN = Convert.ToInt32(locationN.Text);
+            //maximum initial particle speed
+            int mV0 = Convert.ToInt32(maxV0.Value);
+            //maximum particle speed
+            int mV = Convert.ToInt32(maxV.Value);
 
             //get values from sliders
-                // initial inertia influence
-                double Co = C0.Value/100.00;
-                // other particles influence
-                double Ci = Ciner.Value/100.00;
-                    // local best particle position
-                    double Cl = (Clocal.Value/100.00) * Ci;
-                    // global best particle position
-                    double Cg = (Cglobal.Value/100.00) * Ci;
+            // initial inertia influence
+            double Co = C0.Value / 100.00;
+            // other particles influence
+            double Ci = Ciner.Value / 100.00;
+            // local best particle position
+            double Cl = (Clocal.Value / 100.00) * Ci;
+            // global best particle position
+            double Cg = (Cglobal.Value / 100.00) * Ci;
+
+            //chart initialize
+            if (cent_rad.Checked == true)
+            {
+                opt = Convert.ToInt32(cent_lab.Text);
+                this.chart.ChartAreas["plot"].AxisY.Minimum = Math.Floor(opt / 50.00) * 50;
+            }
+            else
+            {
+                opt = Convert.ToInt32(medi_lab.Text);
+                this.chart.ChartAreas["plot"].AxisY.Minimum = Math.Floor(opt / 500.00) * 500;
+            } 
+
+            
+            this.chart.ChartAreas["plot"].AxisY2.Minimum = this.chart.ChartAreas["plot"].AxisY.Minimum;
+            this.chart.ChartAreas["plot"].AxisX.Minimum = 1;
+            this.chart.ChartAreas["plot"].AxisX.Maximum = Convert.ToInt32(iter_limit.Value);
+
+            opt_out.Text = Convert.ToString(opt);
 
             // initialize random particle matrix
             int[][] pMatrix = new int[pN + 1][];
@@ -1082,6 +1107,7 @@ namespace SwarmForge
             avg_out.Invalidate();
             avg_out.Update();
 
+            chart.Series["optimum"].Points.AddXY(c, opt);
             chart.Series["best_fit"].Points.AddXY(c, best);
             chart.Series["best_now"].Points.AddXY(c, nbest);
             chart.Series["avg_now"].Points.AddXY(c, Convert.ToInt32(Math.Round(fitavg)));
