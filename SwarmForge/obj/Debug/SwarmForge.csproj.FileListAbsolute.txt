@@ -145,7 +145,6 @@ C:\Users\L4\Desktop\SwarmForge-master\SwarmForge\bin\Debug\opt\med.txt
 C:\Users\L4\Desktop\SwarmForge-master\SwarmForge\bin\Debug\SwarmForge.exe.config
 C:\Users\L4\Desktop\SwarmForge-master\SwarmForge\bin\Debug\SwarmForge.exe
 C:\Users\L4\Desktop\SwarmForge-master\SwarmForge\bin\Debug\SwarmForge.pdb
-C:\Users\L4\Desktop\SwarmForge-master\SwarmForge\obj\Debug\SwarmForge.csprojResolveAssemblyReference.cache
 C:\Users\L4\Desktop\SwarmForge-master\SwarmForge\obj\Debug\SwarmForge.SwarmForge.resources
 C:\Users\L4\Desktop\SwarmForge-master\SwarmForge\obj\Debug\SwarmForge.Properties.Resources.resources
 C:\Users\L4\Desktop\SwarmForge-master\SwarmForge\obj\Debug\SwarmForge.csproj.GenerateResource.Cache
@@ -204,3 +203,4 @@ C:\Users\mihailo\Desktop\SwarmForge-master\SwarmForge\obj\Debug\SwarmForge.Prope
 C:\Users\mihailo\Desktop\SwarmForge-master\SwarmForge\obj\Debug\SwarmForge.csproj.GenerateResource.Cache
 C:\Users\mihailo\Desktop\SwarmForge-master\SwarmForge\obj\Debug\SwarmForge.exe
 C:\Users\mihailo\Desktop\SwarmForge-master\SwarmForge\obj\Debug\SwarmForge.pdb
+C:\Users\L4\Desktop\SwarmForge-master\SwarmForge\obj\Debug\SwarmForge.csprojResolveAssemblyReference.cache

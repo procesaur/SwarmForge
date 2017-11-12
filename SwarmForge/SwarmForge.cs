@@ -98,6 +98,9 @@ namespace SwarmForge
             // hide panels (might be hidden already)
             solve_pan.Visible = false;
             current_pan.Visible = false;
+            graph_pan.Visible = false;
+            res_pan.Visible = false;
+            final_pan.Visible = false;
 
             // get database selection (must be selected)
             string choice = comboBox1.SelectedItem.ToString();
@@ -126,47 +129,14 @@ namespace SwarmForge
             limit_pan.Visible = true;
             solve_pan.Visible = true;
             current_pan.Visible = true;
+            graph_pan.Visible = true;
+            res_pan.Visible = true;
 
             // initialize numeric field extremes
             maxV.Maximum = Convert.ToInt32(locationN.Text) / 2;
             maxV0.Maximum = Convert.ToInt32(locationN.Text) / 2;
             maxR.Maximum = Convert.ToInt32(locationN.Text) / 2;
             constTo.Maximum = Convert.ToInt32(locationN.Text);
-
-            // chart initialize
-
-            //chart.Series.Clear();           
-
-            // initialize three series
-            //var ser_best = new System.Windows.Forms.DataVisualization.Charting.Series
-            //{
-            //    Name = "Best Fitness so far",
-            //    Color = System.Drawing.Color.Red,
-            //    IsVisibleInLegend = false,
-            //    IsXValueIndexed = true,
-            //    ChartType = SeriesChartType.Line
-            //};
-            //this.chart.Series.Add(ser_best);
-
-            //var ser_now = new System.Windows.Forms.DataVisualization.Charting.Series
-            //{
-            //    Name = "Best Current Fitness",
-            //    Color = System.Drawing.Color.Green,
-            //    IsVisibleInLegend = false,
-            //    IsXValueIndexed = true,
-            //    ChartType = SeriesChartType.Line
-            //};
-            //this.chart.Series.Add(ser_now);
-
-            //var avg_now = new System.Windows.Forms.DataVisualization.Charting.Series
-            //{
-            //    Name = "Current Fitness Average",
-            //    Color = System.Drawing.Color.Yellow,
-            //    IsVisibleInLegend = false,
-            //    IsXValueIndexed = true,
-            //    ChartType = SeriesChartType.Line
-            //};
-            //this.chart.Series.Add(avg_now);
 
         }
 
@@ -280,14 +250,26 @@ namespace SwarmForge
         // GO BUTTON ACTION - INTELLIGENT SOLUTION SEARCH
         private void go_but_Click(object sender, EventArgs e)
         {
+            // variables initialize
+            int best = 0;
+            int bestS = 0;
+            double fitavgS = 0;
+            int nbest = 0;
+            int impN = 0;
+            int lastC = 0;
+
+            // hide previous result panel
+            final_pan.Visible = false;
 
             // clear chart
             chart.Series["best_fit"].Points.Clear();
             chart.Series["best_now"].Points.Clear();
             chart.Series["avg_now"].Points.Clear();
             chart.Series["optimum"].Points.Clear();
+            chart.ChartAreas["plot"].AxisX.Maximum = Double.NaN;
+            chart.ChartAreas["plot"].RecalculateAxesScale();
 
-            //get values from labels
+            //get values from labels and textboxes
             //particle number
             int pN = Convert.ToInt32(particleN.Value);
             //object number
@@ -298,6 +280,11 @@ namespace SwarmForge
             int mV0 = Convert.ToInt32(maxV0.Value);
             //maximum particle speed
             int mV = Convert.ToInt32(maxV.Value);
+            //maximum random inertion
+            int mR = Convert.ToInt32(maxR.Value);
+            // frequency of random inertion hit
+            int fR = Convert.ToInt32(rand_f.Value);
+
 
             //get values from sliders
             // initial inertia influence
@@ -310,21 +297,35 @@ namespace SwarmForge
             double Cg = (Cglobal.Value / 100.00) * Ci;
 
             //chart initialize
+            
+            //if center is chosen 
             if (cent_rad.Checked == true)
             {
+                // get optimum and set charts y-axis accordingly
                 opt = Convert.ToInt32(cent_lab.Text);
                 this.chart.ChartAreas["plot"].AxisY.Minimum = Math.Floor(opt / 50.00) * 50;
             }
+
+            //if median is chosen 
             else
             {
+                // get optimum and set charts y-axis accordingly
                 opt = Convert.ToInt32(medi_lab.Text);
                 this.chart.ChartAreas["plot"].AxisY.Minimum = Math.Floor(opt / 500.00) * 500;
             } 
-
             
+            // duplicate y-axis
             this.chart.ChartAreas["plot"].AxisY2.Minimum = this.chart.ChartAreas["plot"].AxisY.Minimum;
+
+            // set iteration minimum to 1
             this.chart.ChartAreas["plot"].AxisX.Minimum = 1;
-            this.chart.ChartAreas["plot"].AxisX.Maximum = Convert.ToInt32(iter_limit.Value);
+
+            // if iteration limit is needed
+            if (iteration_rad.Checked)    
+            {
+                // fixate x-axis to maximum
+                this.chart.ChartAreas["plot"].AxisX.Maximum = Convert.ToInt32(iter_limit.Value);
+            }       
 
             opt_out.Text = Convert.ToString(opt);
 
@@ -400,10 +401,24 @@ namespace SwarmForge
                 lfit = fit;
 
                 // global best fitness and soulution assign
-                int best = fit.Min();
-                int nbest = 99999;
-                
+                best = fit.Min();
+                nbest = 99999;
+                bestS = 0;
+
+                // calculate average fitness
+                fitavg = 0;
+                for (int i = 1; i < pN + 1; i++)
+                {
+                    fitavg = fitavg + fit[i];
+                }
+                fitavg = fitavg / pN;
+
+                //start fitness store
+                fitavgS = 0;
+                fitavgS = fitavg;
+
                 nbest = best;
+                bestS = best;
                 int[] vbest = pMatrix[Array.IndexOf(fit, best)];
 
                 // 1. P-median result with loop stoping on iteration limit hit
@@ -415,7 +430,7 @@ namespace SwarmForge
                         // increase iteration number
                         c++;
                         // perform a step
-                        var newstep = step(pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN);
+                        var newstep = step(c, pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN, fR, mR);
                         pMatrix = newstep.Item1;
                         nvMatrix = newstep.Item2;
 
@@ -434,7 +449,13 @@ namespace SwarmForge
                         nbest = fit.Min();
                         if (nbest < best)
                         {
+                            //increase number of times fitness improved
+                            impN++;
+                            //store last time fitness improved
+                            lastC = c;
+                            // set new best fitness
                             best = nbest;
+                            // and its coordinates
                             vbest = pMatrix[Array.IndexOf(fit, nbest)];
                         }
                         // best solution vector
@@ -470,7 +491,7 @@ namespace SwarmForge
                         c++;
 
                         // perform a step
-                        var newstep = step(pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN);
+                        var newstep = step(c, pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN, fR, mR);
                         pMatrix = newstep.Item1;
                         nvMatrix = newstep.Item2;
 
@@ -489,7 +510,13 @@ namespace SwarmForge
                         nbest = fit.Min();
                         if (nbest < best)
                         {
+                            //increase number of times fitness improved
+                            impN++;
+                            //store last time fitness improved
+                            lastC = c;
+                            // set new best fitness
                             best = nbest;
+                            // and its coordinates
                             vbest = pMatrix[Array.IndexOf(fit, nbest)];
                         }
 
@@ -523,7 +550,7 @@ namespace SwarmForge
                         c++;
 
                         // perform a step
-                        var newstep = step(pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN);
+                        var newstep = step(c, pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN, fR, mR);
                         pMatrix = newstep.Item1;
                         nvMatrix = newstep.Item2;
 
@@ -542,7 +569,13 @@ namespace SwarmForge
                         nbest = fit.Min();
                         if (nbest < best)
                         {
+                            //increase number of times fitness improved
+                            impN++;
+                            //store last time fitness improved
+                            lastC = c;
+                            // set new best fitness
                             best = nbest;
+                            // and its coordinates
                             vbest = pMatrix[Array.IndexOf(fit, nbest)];
                         }
 
@@ -574,10 +607,25 @@ namespace SwarmForge
                 fit[0] = 999999;
 
                 // global best fitness and soulution assign
-                int best = fit.Min();
-                int nbest = 99999;
+                best = fit.Min();
+                nbest = 99999;
+                bestS = 0;
+
                 nbest = best;
+                bestS = best;
                 lfit = fit;
+
+                // calculate average fitness
+                fitavg = 0;
+                for (int i = 1; i < pN + 1; i++)
+                {
+                    fitavg = fitavg + fit[i];
+                }
+                fitavg = fitavg / pN;
+
+                //start fitness store
+                fitavgS = 0;
+                fitavgS = fitavg;
 
                 // best solution vector
                 int[] vbest = pMatrix[Array.IndexOf(fit, best)];
@@ -592,7 +640,7 @@ namespace SwarmForge
                         c++;
 
                         // perform a step
-                        var newstep = step(pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN);
+                        var newstep = step(c, pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN, fR, mR);
                         pMatrix = newstep.Item1;
                         nvMatrix = newstep.Item2;
 
@@ -611,7 +659,13 @@ namespace SwarmForge
                         nbest = fit.Min();
                         if (nbest < best)
                         {
+                            //increase number of times fitness improved
+                            impN++;
+                            //store last time fitness improved
+                            lastC = c;
+                            // set new best fitness
                             best = nbest;
+                            // and its coordinates
                             vbest = pMatrix[Array.IndexOf(fit, nbest)];
                         }
 
@@ -646,7 +700,7 @@ namespace SwarmForge
                         c++;
 
                         // perform a step
-                        var newstep = step(pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN);
+                        var newstep = step(c, pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN, fR, mR);
                         pMatrix = newstep.Item1;
                         nvMatrix = newstep.Item2;
 
@@ -665,7 +719,13 @@ namespace SwarmForge
                         nbest = fit.Min();
                         if (nbest < best)
                         {
+                            //increase number of times fitness improved
+                            impN++;
+                            //store last time fitness improved
+                            lastC = c;
+                            // set new best fitness
                             best = nbest;
+                            // and its coordinates
                             vbest = pMatrix[Array.IndexOf(fit, nbest)];
                         }
 
@@ -699,7 +759,7 @@ namespace SwarmForge
                         c++;
 
                         // perform a step
-                        var newstep = step(pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN);
+                        var newstep = step(c, pMatrix, lMatrix, vbest, vMatrix, nvMatrix, pN, oN, Co, Cl, Cg, mV, lN, fR, mR);
                         pMatrix = newstep.Item1;
                         nvMatrix = newstep.Item2;
 
@@ -718,7 +778,13 @@ namespace SwarmForge
                         nbest = fit.Min();
                         if (nbest < best)
                         {
+                            //increase number of times fitness improved
+                            impN++;
+                            //store last time fitness improved
+                            lastC = c;
+                            // set new best fitness
                             best = nbest;
+                            // and its coordinates
                             vbest = pMatrix[Array.IndexOf(fit, nbest)];
                         }
                         // set local bests matrix and value vector
@@ -747,6 +813,11 @@ namespace SwarmForge
 
             // this can be used to write a log file - optional
             File.WriteAllText("log/log.txt", log);
+
+            // show results panel
+            final_pan.Visible = true;
+            int metrics = Metrics(c, timer.ElapsedMilliseconds, best, fitavg, fitavgS, bestS, impN, lastC);
+
         }
 
 
@@ -995,7 +1066,7 @@ namespace SwarmForge
 
         // !!! function to produce new particle step (takes user defined prefernces as input)
         // returns a touple containing new particle position matrix and its new inertion matrix
-        public Tuple<int[][], int[][]> step(int[][] pMatrix, int[][] lMatrix, int[] vbest, int[][] vMatrix, int[][] nvMatrix, int pN, int oN, double C0, double Cl, double Cg, int max, int lN)
+        public Tuple<int[][], int[][]> step(int c, int[][] pMatrix, int[][] lMatrix, int[] vbest, int[][] vMatrix, int[][] nvMatrix, int pN, int oN, double C0, double Cl, double Cg, int max, int lN, int fR, int mR)
         {
             // create new matrices that will contain results
             // particle matrix after iteration
@@ -1004,6 +1075,20 @@ namespace SwarmForge
             int[][] newM = new int[pN+1][];
 
             Random rnd = new Random();
+            int maR;
+
+            //is there going to be random inertions?
+            // if it is set and if this is the right iteration
+            if (fR>0 && c%fR == 0)
+            {
+                //set te inertion to one provided in textbox
+                maR = mR;
+            }
+            else
+            {
+                // otherwise set it to zero (no move)
+                maR = 0;
+            }
 
             // for each particle
             for (int i = 1; i < pN+1; i++)
@@ -1032,12 +1117,14 @@ namespace SwarmForge
                     else if (inermove < -max) { inermove = -max; }
 
                     // set movement to the sum (write into new inertia matrix defeind earlier)
-                    step[i][j] = Convert.ToInt32(Math.Ceiling(locmove + globmove + inermove + rnd.Next(-max,max)));
-                    if (step[i][j] == 0) { step[i][j] = -1; }
+                    step[i][j] = Convert.ToInt32(Math.Ceiling(locmove + globmove + inermove + rnd.Next(-maR,maR)));
 
-                    //if it tops maximum inertia, set to max
-                    //if (move > max) { step[i][j] = max; }
-                    //else if (move < -max) { step[i][j] = -max; }
+                    //forbid particle from being stationary - dismissed for now
+                        //if (step[i][j] == 0) { step[i][j] = -1; }
+
+                    //if it tops maximum inertia, set to max - dismissed for now
+                        //if (move > max) { step[i][j] = max; }
+                        //else if (move < -max) { step[i][j] = -max; }
 
                     // move the particle (write new position into new particle position matrix defeind earlier)
                     newM[i][j] = pMatrix[i][j] + step[i][j];
@@ -1078,6 +1165,40 @@ namespace SwarmForge
             return log;
         }
 
+        // function to output result metrics
+        public int Metrics(int c, long time, int best, double fitavg, double fitavgS, int bestS, int impN,int lastC)
+        {
+            // recalculate time
+            double sec = time / 1000.00;
+
+            // best fitness improvement since start
+            fit_imp_res.Text = Convert.ToString(Math.Round((bestS * 100.00) / best - 100,2))+"%";
+            fit_imp_res.Invalidate();
+            fit_imp_res.Update();
+
+            // times best fitness improved output
+            imp_N_res.Text = Convert.ToString(impN);
+            imp_N_res.Invalidate();
+            imp_N_res.Update();
+
+            // number of meaningfull iterations output
+            good_iter_res.Text = Convert.ToString(Math.Round((lastC * 100.00) / c, 2)) + "%"; ;
+            good_iter_res.Invalidate();
+            good_iter_res.Update();
+
+            // number of meaningfull iterations output
+            err_perc_res.Text = Convert.ToString(Math.Round((best * 100.00) / opt - 100, 2)) + "%";
+            err_perc_res.Invalidate();
+            err_perc_res.Update();
+
+            // model final speed output output
+            model_speed_res.Text = Convert.ToString(Math.Round(c*1000.00/time,2))+" i/s";
+            model_speed_res.Invalidate();
+            model_speed_res.Update();
+
+            //out
+            return 0;
+        }
 
         // function to get informtion on each iteration - used for introspection
         public int Solution(int c, long time, int best, int nbest, double fitavg)
@@ -1088,7 +1209,7 @@ namespace SwarmForge
             iter_out.Update();
 
             // update elapsed time field
-            time_out.Text = Convert.ToString(time / 1000);
+            time_out.Text = Convert.ToString(time / 1000.00);
             time_out.Invalidate();
             time_out.Update();
 
@@ -1107,6 +1228,7 @@ namespace SwarmForge
             avg_out.Invalidate();
             avg_out.Update();
 
+            // pin points to chart
             chart.Series["optimum"].Points.AddXY(c, opt);
             chart.Series["best_fit"].Points.AddXY(c, best);
             chart.Series["best_now"].Points.AddXY(c, nbest);
