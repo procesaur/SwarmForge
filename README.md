@@ -12,7 +12,7 @@ It is supposed to help in narrowing down parameter option for different problems
 
 ## Basic information on solution shape and origin
 This git contains complete fileset of a Visual Studio solution (.sln) project (x64, visual C#, windows forms application).
-Starting and editing of the project in this form requires Micorsoft Windows, suitable version of [Visual Studio](https://www.visualstudio.com/) (VS2015 and VS 2017 certany work), suitable x64 machine, and a suitable version of Microsoft .NET framework ([4.5]() and higher).
+Starting and editing of the project in this form requires Micorsoft Windows, suitable version of [Visual Studio](https://www.visualstudio.com/) (VS2015 and VS 2017 certany work), suitable x64 machine, and a suitable version of Microsoft .NET framework (4.5 or higher).
 
 ## Contributing and versioning
 Currently the code has only one version (this one) and only one contributor (me), but others are welcome to join in.
