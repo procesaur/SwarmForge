@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.label1 = new System.Windows.Forms.Label();
             this.fetch_button = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -86,6 +86,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.particleN = new System.Windows.Forms.NumericUpDown();
             this.influ_pan = new System.Windows.Forms.Panel();
+            this.Clocal = new System.Windows.Forms.TrackBar();
+            this.Cglobal = new System.Windows.Forms.TrackBar();
             this.C0 = new System.Windows.Forms.TrackBar();
             this.valClocal = new System.Windows.Forms.Label();
             this.valCglobal = new System.Windows.Forms.Label();
@@ -93,9 +95,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.Clocal = new System.Windows.Forms.TrackBar();
             this.valC0 = new System.Windows.Forms.Label();
-            this.Cglobal = new System.Windows.Forms.TrackBar();
             this.Ciner = new System.Windows.Forms.TrackBar();
             this.label12 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -135,9 +135,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.maxV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.particleN)).BeginInit();
             this.influ_pan.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.C0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Clocal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Cglobal)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.C0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Ciner)).BeginInit();
             this.basic_pan.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -190,7 +190,7 @@
             // 
             this.cent_lab.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cent_lab.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cent_lab.Location = new System.Drawing.Point(234, 34);
+            this.cent_lab.Location = new System.Drawing.Point(233, 39);
             this.cent_lab.Name = "cent_lab";
             this.cent_lab.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.cent_lab.Size = new System.Drawing.Size(100, 23);
@@ -202,7 +202,7 @@
             // 
             this.medi_lab.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.medi_lab.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.medi_lab.Location = new System.Drawing.Point(237, 9);
+            this.medi_lab.Location = new System.Drawing.Point(236, 11);
             this.medi_lab.Name = "medi_lab";
             this.medi_lab.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.medi_lab.Size = new System.Drawing.Size(97, 23);
@@ -227,7 +227,7 @@
             // 
             this.cent_rad.AutoSize = true;
             this.cent_rad.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cent_rad.Location = new System.Drawing.Point(22, 50);
+            this.cent_rad.Location = new System.Drawing.Point(22, 41);
             this.cent_rad.Name = "cent_rad";
             this.cent_rad.Size = new System.Drawing.Size(194, 19);
             this.cent_rad.TabIndex = 10;
@@ -239,7 +239,7 @@
             // 
             this.medi_rad.AutoSize = true;
             this.medi_rad.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.medi_rad.Location = new System.Drawing.Point(22, 22);
+            this.medi_rad.Location = new System.Drawing.Point(22, 13);
             this.medi_rad.Name = "medi_rad";
             this.medi_rad.Size = new System.Drawing.Size(202, 19);
             this.medi_rad.TabIndex = 9;
@@ -426,81 +426,81 @@
             this.chart.BackColor = System.Drawing.Color.PaleGoldenrod;
             this.chart.BackSecondaryColor = System.Drawing.Color.White;
             this.chart.BorderlineColor = System.Drawing.Color.Transparent;
-            chartArea2.AlignmentOrientation = ((System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations)((System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations.Vertical | System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations.Horizontal)));
-            chartArea2.Area3DStyle.Inclination = 45;
-            chartArea2.Area3DStyle.IsRightAngleAxes = false;
-            chartArea2.Area3DStyle.Perspective = 2;
-            chartArea2.Area3DStyle.PointDepth = 30;
-            chartArea2.Area3DStyle.PointGapDepth = 1;
-            chartArea2.Area3DStyle.Rotation = 0;
-            chartArea2.Area3DStyle.WallWidth = 10;
-            chartArea2.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
-            chartArea2.BackColor = System.Drawing.Color.LightGray;
-            chartArea2.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.TopBottom;
-            chartArea2.BackImageAlignment = System.Windows.Forms.DataVisualization.Charting.ChartImageAlignmentStyle.Top;
-            chartArea2.BackImageTransparentColor = System.Drawing.Color.Transparent;
-            chartArea2.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            chartArea2.BorderColor = System.Drawing.Color.White;
-            chartArea2.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea2.Name = "plot";
-            chartArea2.Position.Auto = false;
-            chartArea2.Position.Height = 90F;
-            chartArea2.Position.Width = 97F;
-            chartArea2.Position.X = 3F;
-            chartArea2.Position.Y = 3F;
-            chartArea2.ShadowColor = System.Drawing.Color.White;
-            this.chart.ChartAreas.Add(chartArea2);
-            legend2.Alignment = System.Drawing.StringAlignment.Center;
-            legend2.BackColor = System.Drawing.Color.Gray;
-            legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            legend2.ForeColor = System.Drawing.Color.White;
-            legend2.Name = "Legend1";
-            this.chart.Legends.Add(legend2);
+            chartArea1.AlignmentOrientation = ((System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations)((System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations.Vertical | System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations.Horizontal)));
+            chartArea1.Area3DStyle.Inclination = 45;
+            chartArea1.Area3DStyle.IsRightAngleAxes = false;
+            chartArea1.Area3DStyle.Perspective = 2;
+            chartArea1.Area3DStyle.PointDepth = 30;
+            chartArea1.Area3DStyle.PointGapDepth = 1;
+            chartArea1.Area3DStyle.Rotation = 0;
+            chartArea1.Area3DStyle.WallWidth = 10;
+            chartArea1.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+            chartArea1.BackColor = System.Drawing.Color.LightGray;
+            chartArea1.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.TopBottom;
+            chartArea1.BackImageAlignment = System.Windows.Forms.DataVisualization.Charting.ChartImageAlignmentStyle.Top;
+            chartArea1.BackImageTransparentColor = System.Drawing.Color.Transparent;
+            chartArea1.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            chartArea1.BorderColor = System.Drawing.Color.White;
+            chartArea1.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
+            chartArea1.Name = "plot";
+            chartArea1.Position.Auto = false;
+            chartArea1.Position.Height = 90F;
+            chartArea1.Position.Width = 97F;
+            chartArea1.Position.X = 3F;
+            chartArea1.Position.Y = 3F;
+            chartArea1.ShadowColor = System.Drawing.Color.White;
+            this.chart.ChartAreas.Add(chartArea1);
+            legend1.Alignment = System.Drawing.StringAlignment.Center;
+            legend1.BackColor = System.Drawing.Color.Gray;
+            legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            legend1.ForeColor = System.Drawing.Color.White;
+            legend1.Name = "Legend1";
+            this.chart.Legends.Add(legend1);
             this.chart.Location = new System.Drawing.Point(0, 8);
             this.chart.Name = "chart";
             this.chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Fire;
-            series5.BorderWidth = 2;
-            series5.ChartArea = "plot";
-            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series5.Color = System.Drawing.Color.Red;
-            series5.LabelBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            series5.Legend = "Legend1";
-            series5.LegendText = "Best Fitness so Far";
-            series5.Name = "best_fit";
-            series5.ShadowColor = System.Drawing.Color.Gold;
-            series5.ShadowOffset = 1;
-            series5.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series5.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series6.BorderWidth = 2;
-            series6.ChartArea = "plot";
-            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series6.Color = System.Drawing.Color.Blue;
-            series6.Legend = "Legend1";
-            series6.LegendText = "Best Current Fitness";
-            series6.Name = "best_now";
-            series6.ShadowColor = System.Drawing.Color.Cyan;
-            series6.ShadowOffset = 1;
-            series6.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series6.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series7.BorderWidth = 2;
-            series7.ChartArea = "plot";
-            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series7.Color = System.Drawing.Color.Gold;
-            series7.Legend = "Legend1";
-            series7.LegendText = "Current Fitness Average";
-            series7.Name = "avg_now";
-            series7.ShadowColor = System.Drawing.Color.Yellow;
-            series7.ShadowOffset = 1;
-            series8.ChartArea = "plot";
-            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Area;
-            series8.Color = System.Drawing.Color.SpringGreen;
-            series8.Legend = "Legend1";
-            series8.LegendText = "Optimum Value";
-            series8.Name = "optimum";
-            this.chart.Series.Add(series5);
-            this.chart.Series.Add(series6);
-            this.chart.Series.Add(series7);
-            this.chart.Series.Add(series8);
+            series1.BorderWidth = 2;
+            series1.ChartArea = "plot";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Color = System.Drawing.Color.Red;
+            series1.LabelBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            series1.Legend = "Legend1";
+            series1.LegendText = "Best Fitness so Far";
+            series1.Name = "best_fit";
+            series1.ShadowColor = System.Drawing.Color.Gold;
+            series1.ShadowOffset = 1;
+            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series2.BorderWidth = 2;
+            series2.ChartArea = "plot";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Color = System.Drawing.Color.Blue;
+            series2.Legend = "Legend1";
+            series2.LegendText = "Best Current Fitness";
+            series2.Name = "best_now";
+            series2.ShadowColor = System.Drawing.Color.Cyan;
+            series2.ShadowOffset = 1;
+            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series3.BorderWidth = 2;
+            series3.ChartArea = "plot";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series3.Color = System.Drawing.Color.Gold;
+            series3.Legend = "Legend1";
+            series3.LegendText = "Current Fitness Average";
+            series3.Name = "avg_now";
+            series3.ShadowColor = System.Drawing.Color.Yellow;
+            series3.ShadowOffset = 1;
+            series4.ChartArea = "plot";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Area;
+            series4.Color = System.Drawing.Color.SpringGreen;
+            series4.Legend = "Legend1";
+            series4.LegendText = "Optimum Value";
+            series4.Name = "optimum";
+            this.chart.Series.Add(series1);
+            this.chart.Series.Add(series2);
+            this.chart.Series.Add(series3);
+            this.chart.Series.Add(series4);
             this.chart.Size = new System.Drawing.Size(869, 448);
             this.chart.TabIndex = 4;
             this.chart.Text = "chart1";
@@ -822,6 +822,24 @@
             this.influ_pan.TabIndex = 10;
             this.influ_pan.Visible = false;
             // 
+            // Clocal
+            // 
+            this.Clocal.Location = new System.Drawing.Point(83, 152);
+            this.Clocal.Maximum = 100;
+            this.Clocal.Name = "Clocal";
+            this.Clocal.Size = new System.Drawing.Size(205, 45);
+            this.Clocal.TabIndex = 1;
+            this.Clocal.Scroll += new System.EventHandler(this.Clocal_ValueChanged);
+            // 
+            // Cglobal
+            // 
+            this.Cglobal.Location = new System.Drawing.Point(83, 122);
+            this.Cglobal.Maximum = 100;
+            this.Cglobal.Name = "Cglobal";
+            this.Cglobal.Size = new System.Drawing.Size(205, 45);
+            this.Cglobal.TabIndex = 1;
+            this.Cglobal.Scroll += new System.EventHandler(this.Cglobal_ValueChanged);
+            // 
             // C0
             // 
             this.C0.Location = new System.Drawing.Point(83, 80);
@@ -886,15 +904,6 @@
             this.label8.TabIndex = 7;
             this.label8.Text = "Particle movement influence";
             // 
-            // Clocal
-            // 
-            this.Clocal.Location = new System.Drawing.Point(83, 152);
-            this.Clocal.Maximum = 100;
-            this.Clocal.Name = "Clocal";
-            this.Clocal.Size = new System.Drawing.Size(205, 45);
-            this.Clocal.TabIndex = 1;
-            this.Clocal.Scroll += new System.EventHandler(this.Clocal_ValueChanged);
-            // 
             // valC0
             // 
             this.valC0.AutoSize = true;
@@ -903,15 +912,6 @@
             this.valC0.Size = new System.Drawing.Size(17, 13);
             this.valC0.TabIndex = 12;
             this.valC0.Text = "ini";
-            // 
-            // Cglobal
-            // 
-            this.Cglobal.Location = new System.Drawing.Point(83, 122);
-            this.Cglobal.Maximum = 100;
-            this.Cglobal.Name = "Cglobal";
-            this.Cglobal.Size = new System.Drawing.Size(205, 45);
-            this.Cglobal.TabIndex = 1;
-            this.Cglobal.Scroll += new System.EventHandler(this.Cglobal_ValueChanged);
             // 
             // Ciner
             // 
@@ -1185,9 +1185,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.particleN)).EndInit();
             this.influ_pan.ResumeLayout(false);
             this.influ_pan.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.C0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Clocal)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Cglobal)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.C0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Ciner)).EndInit();
             this.basic_pan.ResumeLayout(false);
             this.basic_pan.PerformLayout();
