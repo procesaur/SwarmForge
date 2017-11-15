@@ -24,17 +24,17 @@ Starting and editing of the project in this form requires Micorsoft Windows, sui
    - "opt" folder - contains 2 .txt files with solutions of 40 problems from datasets above, also from theOR library;
    - "log" folder - will contain potential log files in the application installation directory;  
     
- -Files/Folders required for the VS solution project to run properly >> >>>
-  -"Properties" folder - folder containig some visual studio project properties files;
-  -"obj" folder - contains files for debug and release of the current application;
-  -"App.config" file that contains the app configuration;
-  -"SwarmForge.csproj" file that contains the project information;
-  -"SwarmForge.resx" file;
+ - Files/Folders required for the VS solution project to run properly >> >>>
+   - "Properties" folder - folder containig some visual studio project properties files;
+   - "obj" folder - contains files for debug and release of the current application;
+   - "App.config" file that contains the app configuration;
+   - "SwarmForge.csproj" file that contains the project information;
+   - "SwarmForge.resx" file;
    
-   Files that contain author code >>>
-      "Program.cs" file - is the starting program file with whole purpose to start the SwarForge application;
-      "SwarmForge.cs" file - is the main application file containing author code;
-      "SwarmForge.Designer.cs" file - is the file containing definition, outline and properties of the complete application GUI.
+ - Files that contain author code >>>
+   - "Program.cs" file - is the starting program file with whole purpose to start the SwarForge application;
+   - "SwarmForge.cs" file - is the main application file containing author code;
+   - "SwarmForge.Designer.cs" file - is the file containing definition, outline and properties of the complete application GUI.
 
 ## Contributing and versioning
 Currently the code has only one version (this one) and only one contributor (me), but others are welcome to join in.
