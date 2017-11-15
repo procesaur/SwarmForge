@@ -33,7 +33,7 @@ Starting and editing of the project in this form requires Micorsoft Windows, sui
    
    - Files that contain author code >>>
      - "Program.cs" file - is the starting program file with whole purpose to start the SwarForge application;
-     - "SwarmForge.cs" file - is the main application file containing author code;
+     - **"SwarmForge.cs"** file - is the main application file containing author code;
      - "SwarmForge.Designer.cs" file - is the file containing definition, outline and properties of the complete application GUI.
 
 ## Contributing and versioning
