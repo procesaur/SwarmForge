@@ -2,11 +2,13 @@
 Swarm forge is a windows application designed to ease the testing of different particle swarm parameter value combinations and setups in order to explore result differences in facility location problems (with p-medain and p-center solution options).
 
 Some of the options included are:
--dataset reconstruction
--particle swarm movement limitations adjustments
--particle swarm orientation and tendency adjustments
--different algorithm stop options
--display of multiple resulted metrics
+- dataset reconstruction
+- particle swarm movement limitations adjustments
+- particle swarm orientation and tendency adjustments
+- different algorithm stop options
+- display of multiple resulted metrics
+
+A simple tutorial can be found on [this adress](https://youtu.be/2FL4P0q18Vc)
 
 It is supposed to help in narrowing down parameter option for different problems trough testing on different datasetes (40 of them) which are included in the project and are acquired from OR-Library [Copyright (c) (2010) (J E Beasley}](http://people.brunel.ac.uk/~mastjjb/jeb/orlib/legal.html).
 
