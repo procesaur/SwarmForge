@@ -18,7 +18,7 @@ Starting and editing of the project in this form requires Micorsoft Windows, sui
 
 "SwarmForge.sln" - Visual studio solution project file
 
-++"SwarmForge" folder - main folder containing the project (containg 3 types of files/folders) >>>>>>
+-"SwarmForge" folder - main folder containing the project (containg 3 types of files/folders) >>>>>>
  + Folders required for the application installation to run properly, and must be contained in the distribution >>>
   +    "data" folder - contains 40 datasets (.txt files) from the OR library;
    +   "opt" folder - contains 2 .txt files with solutions of 40 problems from datasets above, also from theOR library;
