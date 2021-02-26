@@ -8,7 +8,7 @@ Some of the options included are:
 - different algorithm stop options
 - display of multiple resulted metrics
 
-Alos, a simple tutorial can be found on [this adress](https://youtu.be/2FL4P0q18Vc).
+Alos, a simple tutorial can be found on [THIS ADRESS](https://youtu.be/2FL4P0q18Vc).
 
 It is supposed to help in narrowing down parameter option for different problems trough testing on different datasetes (40 of them) which are included in the project and are acquired from OR-Library [Copyright (c) (2010) (J E Beasley}](http://people.brunel.ac.uk/~mastjjb/jeb/orlib/legal.html).
 
